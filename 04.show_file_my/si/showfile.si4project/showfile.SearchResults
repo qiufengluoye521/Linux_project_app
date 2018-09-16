@@ -1,0 +1,3 @@
+---- fb_var_screeninfo Matches (2 in 2 files) ----
+fb.c line 17 : static struct fb_var_screeninfo g_tFBVar;
+fb.c (display) line 18 : static struct fb_var_screeninfo g_tFBVar;
