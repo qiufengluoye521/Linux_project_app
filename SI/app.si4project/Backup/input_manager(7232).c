@@ -27,7 +27,7 @@ int RegesiterInputOpr(PT_InputOpr ptInputOpr)
 void ShowInputOpr(void)
 {
 	int i = 0;
-	PT_InputOpr ptTmp = ptInputOprHead;
+	PT_InputOpr ptTmp = g_ptInputOprHead;
 
 	while (ptTmp)
 	{

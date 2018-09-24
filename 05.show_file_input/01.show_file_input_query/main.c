@@ -121,6 +121,8 @@ int main(int argc, char **argv)
 
 		printf("supported encoding:\n");
 		ShowEncodingOpr();
+		printf("supported input:\n");
+		ShowInputOpr();
 		return 0;
 	}
 

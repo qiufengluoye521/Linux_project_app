@@ -1,6 +1,5 @@
 #include "input_manager.h"
 #include <stddef.h>
-#include <config.h>
 
 static PT_InputOpr ptInputOprHead;
 
@@ -24,17 +23,6 @@ int RegesiterInputOpr(PT_InputOpr ptInputOpr)
     return 0;
 }
 
-void ShowInputOpr(void)
-{
-	int i = 0;
-	PT_InputOpr ptTmp = ptInputOprHead;
-
-	while (ptTmp)
-	{
-		printf("%02d %s\n", i++, ptTmp->name);
-		ptTmp = ptTmp->ptNext;
-	}
-}
 int AllInputDevicesInit(void)
 {
     int iError  = 0;
@@ -58,10 +46,9 @@ int GetInputEvent(PT_InputEvent ptInputEvent)
     while(ptInputOprTmp) {
         if(0 == ptInputOprTmp->GetInputEvent(ptInputEvent)) {
             return 0;
-        } 
-        
-        ptInputOprTmp = ptInputOprTmp->ptNext;
-        
+        } else {
+            ptInputOprTmp = ptInputOprTmp->ptNext;
+        }
     }
     return -1;
 }

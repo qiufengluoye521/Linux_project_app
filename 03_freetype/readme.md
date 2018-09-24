@@ -55,6 +55,8 @@ lib 目录为：
 
 3.6 sudo cp * /work/tools/gcc-3.4.5-glibc-2.3.6/arm-linux/lib -d -rf
 
+--> cd /work/projects/03_freetype/freetype-2.4.10/tmp/usr/local/lib
+
 --> cp  *so /work/nfs_root/fs_mini_mdev_new/lib -d
 
  一般复制到嵌入式平台的/lib或/usr/lib下，可在/etc/ld.so.conf中指定共享库的位置，尽量使用配置好的文件系统，试了多次jz2440带qt的yaffs系统，将.so文件放入/lib中可用。

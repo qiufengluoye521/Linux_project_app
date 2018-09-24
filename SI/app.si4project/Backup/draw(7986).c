@@ -10,9 +10,6 @@
 #include <disp_manager.h>
 #include <string.h>
 
-#define DBG_PRINTF(...)
-
-
 
 typedef struct PageDesc {
 	int iPage;

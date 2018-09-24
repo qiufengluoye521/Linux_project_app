@@ -3,7 +3,7 @@ CROSSCOMPILE := arm-linux-
 CFLAGS 	:= -Wall -O2 -c
 CFLAGS  += -I$(PWD)/include
 
-LDFLAGS := -lm -lfreetype
+LDFLAGS := -lm -lfreetype -lts
 
 CC 	:= $(CROSSCOMPILE)gcc
 LD 	:= $(CROSSCOMPILE)ld
@@ -22,7 +22,8 @@ OBJS := main.o \
 			fonts/freetype.o              \
 			fonts/fonts_manager.o         \
             input/input_manager.o         \
-            input/stdint.o
+            input/stdint.o                \
+            input/touchscreen.o
 
 all: $(OBJS)
 	$(CC) $(LDFLAGS) -o show_file $^

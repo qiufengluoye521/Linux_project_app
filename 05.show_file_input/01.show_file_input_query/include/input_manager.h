@@ -27,6 +27,7 @@ typedef struct InputOpr {
 } T_InputOpr,*PT_InputOpr;
 
 int RegesiterInputOpr(PT_InputOpr ptInputOpr);
+void ShowInputOpr(void);
 int AllInputDevicesInit(void);
 int GetInputEvent(PT_InputEvent ptInputEvent);
 int InputInit(void);
