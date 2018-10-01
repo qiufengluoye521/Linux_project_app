@@ -67,24 +67,29 @@ static int stdintGetInputEvent(PT_InputEvent ptInputEvent)
 	
     FD_SET(STDIN_FILENO, &tFDs); //STDIN_FILENO is 0
     select(STDIN_FILENO+1, &tFDs, NULL, NULL, &tTV);
-
-    ptInputEvent->iType     = INPUT_TYPE_STDIN;
-    gettimeofday(&ptInputEvent->tTime, NULL);
-
-    c=fgetc(stdin);
-    if('n' == c) {
-        ptInputEvent->iVal      = INPUT_VALUE_DOWN;
-    } else if('u' == c) {
-        ptInputEvent->iVal      = INPUT_VALUE_UP;
-    } else if('q' == c) {
-        ptInputEvent->iVal      = INPUT_VALUE_EXIT;
-    } else {
-        ptInputEvent->iVal      = INPUT_VALUE_UNKNOWN;
-		DBG_PRINTF("stdint input unknow return -1\r\n");
+    if (FD_ISSET(STDIN_FILENO, &tFDs))
+    {
+        ptInputEvent->iType     = INPUT_TYPE_STDIN;
+        gettimeofday(&ptInputEvent->tTime, NULL);
+    
+        c=fgetc(stdin);
+        if('n' == c) {
+            ptInputEvent->iVal      = INPUT_VALUE_DOWN;
+        } else if('u' == c) {
+            ptInputEvent->iVal      = INPUT_VALUE_UP;
+        } else if('q' == c) {
+            ptInputEvent->iVal      = INPUT_VALUE_EXIT;
+        } else {
+            ptInputEvent->iVal      = INPUT_VALUE_UNKNOWN;
+    		DBG_PRINTF("stdint input unknow return -1\r\n");
+        }
+    	DBG_PRINTF("stdint input return 0\r\n");
+        return 0;
     }
-	//DBG_PRINTF("stdint input return 0\r\n");
-    return 0;
-
+	else
+	{
+		return -1;
+	}
 }
 
 // StdinInit函数只注册(结构体压入链表)，没有具体执行，执行初始化是在 StdinDevInit 

@@ -51,7 +51,6 @@ void *threadfunc(void *pvoid)
     while(1)
     {
         if(0 == PGetInputEvent(&tInputEventTmp)) {
-            DBG_PRINTF("get input event\n");
             /* 读到输入状态值，唤醒主线程 */
             /* 访问临界资源前，先获得互斥量 */
             pthread_mutex_lock(&mutex);
@@ -60,10 +59,9 @@ void *threadfunc(void *pvoid)
             pthread_cond_signal(&condvar);
             /* 释放互斥量 */
             pthread_mutex_unlock(&mutex);
-            DBG_PRINTF("pthread_mutex_unlock\n");
-        } 
-    }
+        }
         
+    return;
 }
 
 
@@ -84,17 +82,13 @@ int AllInputDevicesInit(void)
 
 int GetInputEvent(PT_InputEvent ptInputEvent)
 {
-    DBG_PRINTF("enter GetInputEvent fun\r\n");
     /* 访问临界资源前，先获得互斥量 */
     pthread_mutex_lock(&mutex);
     /* 休眠，等待 pthread_cond_signal(&g_tConVar)函数来唤醒 */
-    DBG_PRINTF("pthread_cond_wait\r\n");
     pthread_cond_wait(&condvar, &mutex);
 
-    *ptInputEvent = gtInputEvent;
-    DBG_PRINTF("ptInputEvent = gtInputEvent will return\r\n");
-    pthread_mutex_unlock(&mutex);
-    
+    ptInputEvent = gtInputEvent;
+
     return 0;
 }
 

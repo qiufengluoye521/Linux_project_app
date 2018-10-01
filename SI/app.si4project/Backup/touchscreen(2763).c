@@ -30,7 +30,7 @@ static int TouchScreenDeviceInit(void)
     
     if ((pcTSName = getenv("TSLIB_TSDEVICE")) != NULL ) 
     {
-        g_tTSDev = ts_open(pcTSName, 0);    /* 阻塞方式打开 */
+        g_tTSDev = ts_open(pcTSName, 1);
     }
     else
     {

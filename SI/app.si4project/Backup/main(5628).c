@@ -173,7 +173,7 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		printf("\r\nEnter 'n' to show next page, 'u' to show previous page, 'q' to exit: \n");
+		printf("\r\nEnter 'n' to show next page, 'u' to show previous page, 'q' to exit: ");
         while(GetInputEvent(&tInputEventTmp));
         //time_dif += tInputEventTmp.tTime
 

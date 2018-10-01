@@ -3,7 +3,7 @@ CROSSCOMPILE := arm-linux-
 CFLAGS 	:= -Wall -O2 -c
 CFLAGS  += -I$(PWD)/include
 
-LDFLAGS := -lm -lfreetype -lts
+LDFLAGS := -lm -lfreetype -lts -lpthread
 
 CC 	:= $(CROSSCOMPILE)gcc
 LD 	:= $(CROSSCOMPILE)ld

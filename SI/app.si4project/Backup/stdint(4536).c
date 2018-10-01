@@ -82,7 +82,7 @@ static int stdintGetInputEvent(PT_InputEvent ptInputEvent)
         ptInputEvent->iVal      = INPUT_VALUE_UNKNOWN;
 		DBG_PRINTF("stdint input unknow return -1\r\n");
     }
-	//DBG_PRINTF("stdint input return 0\r\n");
+	DBG_PRINTF("stdint input return 0\r\n");
     return 0;
 
 }

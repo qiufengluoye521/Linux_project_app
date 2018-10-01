@@ -2,8 +2,6 @@
 #define __INPUT_MANAGER_H__
 
 #include <sys/time.h>
-#include <pthread.h>
-
 
 #define INPUT_TYPE_STDIN            0
 #define INPUT_TYPE_TOUCHSCREEN      1
@@ -22,7 +20,6 @@ typedef struct InputEvent {
 
 typedef struct InputOpr {
     char *name;
-    pthread_t tid;
     int (*DeviceInit)(void);
     int (*DeviceExit)(void);
     int (*GetInputEvent)(PT_InputEvent ptInputEvent);
