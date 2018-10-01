@@ -1,1 +1,5 @@
----- ts_config error! Matches (0 in 0 files) ----
+---- out of region Matches (4 in 4 files) ----
+FBShowPixel in fb - 副本.c (04.show_file_my\display) : 		DBG_PRINTF("out of region\n");
+FBShowPixel in fb.c (04.show_file\display) : 		DBG_PRINTF("out of region\n");
+FBShowPixel in fb.c (05.show_file_input\01.show_file_input_query\display) : 		DBG_PRINTF("out of region\n");
+FBShowPixel in fb.c (05.show_file_input\02.show_file_input_select\display) : 		DBG_PRINTF("out of region\n");

@@ -101,13 +101,13 @@
    c. 较准
    ts_calibrate   
 
-   d. telnetd -l /bin/sh  //启动telnet服务，为了登录进去观察CPU占用率
+   d. telnetd -l /bin/sh  //启动telnet服务，为了登录进去观察CPU占用率（secureCRT telnet方式连接开发板）
 
    e. ./show_file -s 24 -d fb -f ./MSYH.TTF ./utf8_novel.txt
 
    f. telnet上开发板执行top命令观察
 
-2.  **使用select,poll**   // CPU占用率低，适用于很多简单场合
+2. **使用select,poll**   // CPU占用率低，适用于很多简单场合
 
    参考：UNIX环境高级编程 I/O多路转接
 
@@ -167,6 +167,86 @@
    测试方法如1.
 
    
+
+   3. **thread 线程机制**
+
+      线程机制需要包含pthread.h头文件，具体使用方法可参考 《Unix_Linux_Windows_OpenMP多线程编程》，内容较多，可先熟悉其基本用法。
+
+      参考如下代码，代码改自文档中的demo。 
+
+      ```c
+      #include <stdio.h>
+      #include <pthread.h>
+      
+      int i = 0;
+      
+      pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+      pthread_cond_t condvar = PTHREAD_COND_INITIALIZER;
+      
+      void *threadfunc(void *pvoid)
+      {
+          while(1)
+          {
+              pthread_mutex_lock(&mutex);
+              if(i < 200)
+              {
+                  i++;
+                  pthread_mutex_unlock(&mutex);
+              }
+              else
+              {
+                  pthread_mutex_unlock(&mutex);
+                  break;
+              }
+              if(i >= 123)
+              {
+                  /* 唤醒主线程 */
+                  pthread_cond_signal(&condvar);
+              }
+          }
+          return NULL;
+      }
+      
+      
+      
+      int main()
+      {
+          pthread_t tid;
+          // 创建一个线程，线程的执行函数是threadfunc
+          pthread_create(&tid, NULL, &threadfunc, NULL);
+          /* 访问临界资源前，先获得互斥量 */
+          pthread_mutex_lock(&mutex);
+      	/* 休眠，等待 pthread_cond_signal(&g_tConVar)函数来唤醒 */
+          pthread_cond_wait(&condvar, &mutex);
+          
+          printf("i = %d\n", i);
+          /* 释放互斥量 */
+          pthread_mutex_unlock(&mutex);
+          /* 等待一个线程完成后继续执行 */
+          pthread_join(tid, NULL);
+          /* 销毁互斥量 mutex */
+          pthread_mutex_destroy(&mutex);
+          /* 销毁条件变量 */
+          pthread_cond_destroy(&condvar);
+          return 0;
+      }
+      ```
+
+      注：
+
+      pthread_join：函数可以使调用这个函数的线程等待指定的线程运行完成再继续执行。它的 形式为：  
+
+      int pthread_join(pthread_t thread, void **value_ptr);
+
+      参数 thread 为要等待的线程的 ID，参数 value_ptr 为指向返回值的指针提供一个位置，这 个返回值是由目标线程传递给 pthread_exit 或 return 的。如果 value_ptr 为 NULL，调用 程序就不会对目标线程的返回状态进行检索了。如果函数调用成功，pthread_join 返回 0， 如果不成功，pthread_join 返回一个非零的错误码。下表列出了 pthread_join 的错误形式 及相应的错误码 
+
+      | 错误   | 原因                              |
+      | ------ | --------------------------------- |
+      | EINVAL | thread 对应的不是一个可接合的线程 |
+      | ESRCH  | 没有 ID 为 thread 的线程          |
+
+   3.  
+   4. 
 
    
 
