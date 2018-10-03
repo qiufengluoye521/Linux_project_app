@@ -1,5 +1,5 @@
----- out of region Matches (4 in 4 files) ----
-FBShowPixel in fb - 副本.c (04.show_file_my\display) : 		DBG_PRINTF("out of region\n");
-FBShowPixel in fb.c (04.show_file\display) : 		DBG_PRINTF("out of region\n");
-FBShowPixel in fb.c (05.show_file_input\01.show_file_input_query\display) : 		DBG_PRINTF("out of region\n");
-FBShowPixel in fb.c (05.show_file_input\02.show_file_input_select\display) : 		DBG_PRINTF("out of region\n");
+---- InitDebugChanel Matches (4 in 2 files) ----
+debug_manager.c (07.show_file_input_netprint\debug) line 87 : int InitDebugChanel(void)
+main in main.c (07.show_file_input_netprint) :     /* 先做DebugInit(仅压入链表，初始化操作调用int InitDebugChanel 否则调试信息无法打印 */
+main in main.c (07.show_file_input_netprint) :     iError = InitDebugChanel();
+main in main.c (07.show_file_input_netprint) :         DBG_PRINTF("InitDebugChanel err\n");
