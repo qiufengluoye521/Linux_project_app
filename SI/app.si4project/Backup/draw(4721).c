@@ -11,6 +11,7 @@
 #include <string.h>
 
 
+
 typedef struct PageDesc {
 	int iPage;
 	unsigned char *pucLcdFirstPosAtFile;

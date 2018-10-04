@@ -105,8 +105,7 @@ int DebugInit(void)
 {
     int iError = 0;
     
-    iError += StdoutInit();
-    iError += NetPrintInit();
+    iError = StdoutInit();
     
     return iError;
 }

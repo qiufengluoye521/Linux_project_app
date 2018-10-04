@@ -1,5 +1,1 @@
----- InitDebugChanel Matches (4 in 2 files) ----
-debug_manager.c (07.show_file_input_netprint\debug) line 87 : int InitDebugChanel(void)
-main in main.c (07.show_file_input_netprint) :     /* 先做DebugInit(仅压入链表，初始化操作调用int InitDebugChanel 否则调试信息无法打印 */
-main in main.c (07.show_file_input_netprint) :     iError = InitDebugChanel();
-main in main.c (07.show_file_input_netprint) :         DBG_PRINTF("InitDebugChanel err\n");
+---- netprint.c get msg: setclient Matches (0 in 0 files) ----

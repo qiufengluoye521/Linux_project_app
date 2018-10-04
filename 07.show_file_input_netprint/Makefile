@@ -25,7 +25,8 @@ OBJS := main.o \
             input/stdint.o                \
             input/touchscreen.o           \
             debug/debug_manager.o         \
-            debug/stdout.o  
+            debug/stdout.o                \
+            debug/netprint.o
 
 all: $(OBJS)
 	$(CC) $(LDFLAGS) -o show_file $^
