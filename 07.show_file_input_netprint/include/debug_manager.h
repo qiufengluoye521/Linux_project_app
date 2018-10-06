@@ -11,5 +11,7 @@ typedef struct DebugOpr {
 } T_DebugOpr,*PT_DebugOpr;
 
 int InitDebugChanel(void);
+void Set_Dbg_Level(int lel);
+void Set_Dbg_Channel(char * dbg_cnl);
 
 #endif  // #ifndef __DEBUG_MANAGER_H__

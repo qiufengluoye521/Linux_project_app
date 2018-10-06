@@ -87,6 +87,7 @@ static void *recive_threadfunc(void *pvoid)
     int iAddrLen;
     char cRecvBuf[1000];
     int iRecvLen;
+    int dbg_level = 0;
     
     while(1)
     {
@@ -101,6 +102,15 @@ static void *recive_threadfunc(void *pvoid)
             {
                 g_tSocketClientAddr = g_tSocketServerAddr;
                 g_iHaveConnected = 1;
+            }
+            else if(strncmp(cRecvBuf,"dbglevel=",9) == 0)
+            {
+                dbg_level   = cRecvBuf[9] - '0';
+                Set_Dbg_Level(dbg_level);
+            }
+            else 
+            {
+                Set_Dbg_Channel(cRecvBuf);
             }
         }
     }
@@ -170,26 +180,8 @@ static int NetDebugOprInit(void)
     /* 创建接收线程和发送线程 */
     pthread_create(&g_trecive_tid, NULL, &recive_threadfunc, NULL);
     pthread_create(&g_tsend_tid, NULL, &send_threadfunc, NULL);
-
-    // while(1)
-    // {
-        // iAddrLen = sizeof(struct sockaddr);
-        // iRecvLen = recvfrom(iSocketServer, cRecvBuf, 999, 0, (struct sockaddr *)&g_tSocketServerAddr, &iAddrLen);
-
-        // if (iRecvLen > 0)
-        // {
-            // cRecvBuf[iRecvLen] = '\0';
-            // DBG_PRINTF("netprint.c get msg: %s\n", cRecvBuf);
-            // if (strcmp(cRecvBuf, "setclient")  == 0)
-            // {
-                // g_tSocketClientAddr = g_tSocketServerAddr;
-                // return 0;
-                // //g_iHaveConnected = 1;
-            // }
-        // }
-    // }
-
     
+    return 0;
 }
 static int NetDebugOprExit(void)
 {

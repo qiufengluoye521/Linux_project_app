@@ -1,6 +1,7 @@
 #include "debug_manager.h"
 #include <string.h>
 #include <stdarg.h>
+#include "config.h"
 
 #define DEFAULT_DBGLEVEL 4
 
@@ -8,6 +9,42 @@ static int g_iDbgLevelLimit = 8;
 
 
 static PT_DebugOpr g_ptDebugOprHead;
+
+static PT_DebugOpr find_Opr_by_name(char * chrName)
+{
+    PT_DebugOpr ptTmp = g_ptDebugOprHead;
+    
+    while(ptTmp)
+    {
+        if(strcmp(ptTmp->name,chrName) == 0)
+        {
+            return ptTmp;
+        }
+    }
+    
+    return NULL;
+}
+
+void Set_Dbg_Level(int lel)
+{    
+    g_iDbgLevelLimit = lel;
+}
+
+void Set_Dbg_Channel(char * dbg_cnl)
+{
+    char chr_Name[100];
+    char * equal_num = 0;
+    PT_DebugOpr ptDebugOprTmp;
+    
+    equal_num               = strchr(dbg_cnl,'=');
+    strcpy(chr_Name,dbg_cnl);
+    chr_Name[equal_num - dbg_cnl]     = '\0';
+    ptDebugOprTmp           = find_Opr_by_name(chr_Name);
+    
+    ptDebugOprTmp->canUsed  = dbg_cnl[equal_num - dbg_cnl + 1] - '0';
+
+}
+
 
 int RegisterDebugOpr(PT_DebugOpr ptDebugOpr)
 {
