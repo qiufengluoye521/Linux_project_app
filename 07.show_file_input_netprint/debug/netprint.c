@@ -59,7 +59,7 @@ static int isFull(void)
 
 static int isEmpty(void)
 {
-    return ((g_iWritebufferIndex % PRINT_BUF_SIZE) == g_iReadbufferIndex);
+    return (g_iWritebufferIndex == g_iReadbufferIndex);
 }
 
 static int PutData(char cVal)
@@ -95,7 +95,6 @@ static void *recive_threadfunc(void *pvoid)
 
         if (iRecvLen > 0)
         {
-            pthread_mutex_lock(&g_tNetDbgMutex);
             cRecvBuf[iRecvLen] = '\0';
             DBG_PRINTF("netprint.c get msg: %s\n", cRecvBuf);
             if (strcmp(cRecvBuf, "setclient")  == 0)
@@ -103,7 +102,6 @@ static void *recive_threadfunc(void *pvoid)
                 g_tSocketClientAddr = g_tSocketServerAddr;
                 g_iHaveConnected = 1;
             }
-            pthread_mutex_unlock(&g_tNetDbgMutex);
         }
     }
     
@@ -124,7 +122,7 @@ static void *send_threadfunc(void *pvoid)
         pthread_cond_wait(&g_tNetDbgCondvar, &g_tNetDbgMutex);	
         pthread_mutex_unlock(&g_tNetDbgMutex);
         
-        if(g_iHaveConnected && (!isEmpty()))
+        while(g_iHaveConnected && (!isEmpty()))
         {
             i = 0;
             while((i < 512) && (0 ==  GetData(&get_char)))
