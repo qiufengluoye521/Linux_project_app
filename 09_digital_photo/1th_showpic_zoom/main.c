@@ -29,7 +29,9 @@ int main(int argc,char ** argv)
     struct stat tStatTmp;
     unsigned char *pucBMPmem;
     int ret;
-    T_PixelDatas pt_pixelDatas;
+    T_PixelDatas t_pixelDatas;
+    T_PixelDatas t_PixelDateFB;
+    
     int i;
     char chrTmp;
     
@@ -45,6 +47,9 @@ int main(int argc,char ** argv)
     ptDispOpr = GetDispOpr("fb");
     ptDispOpr->DeviceInit();
     ptDispOpr->CleanScreen(0);
+    
+    printf("iXres:%d\n",ptDispOpr->iXres);
+    printf("iYres:%d\n",ptDispOpr->iYres);
     
     /* open bmp file */
     iFdBmp = open(argv[1],O_RDWR);
@@ -70,30 +75,21 @@ int main(int argc,char ** argv)
         printf("file is not bmp format \n");
     }
     
-    pt_pixelDatas.iBpp = ptDispOpr->iBpp;
-    g_tBmpFileParser.GetPixelDatas(pucBMPmem,&pt_pixelDatas);
-    printf("iwith is %d\n",pt_pixelDatas.iWidth);
-    printf("iHeight is %d\n",pt_pixelDatas.iHeight);
-    printf("iBpp is %d\n",pt_pixelDatas.iBpp);
-    printf("iLineBytes is %d\n",pt_pixelDatas.iLineBytes);
+    t_pixelDatas.iBpp = ptDispOpr->iBpp;
+    g_tBmpFileParser.GetPixelDatas(pucBMPmem,&t_pixelDatas);
+    // printf("iwith is %d\n",t_pixelDatas.iWidth);
+    // printf("iHeight is %d\n",t_pixelDatas.iHeight);
+    // printf("iBpp is %d\n",t_pixelDatas.iBpp);
+    // printf("iLineBytes is %d\n",t_pixelDatas.iLineBytes);
     
-    for(i = 0;i < pt_pixelDatas.iHeight;i++)
-    {
-        // 写到LCD去
-        // FBShowLine(0, pt_pixelDatas.iWidth, i, pt_pixelDatas.aucPixelDatas);
-    }
+    t_PixelDateFB.iWidth        = ptDispOpr->iXres;
+    t_PixelDateFB.iHeight       = ptDispOpr->iYres;
+    t_PixelDateFB.iBpp          = ptDispOpr->iBpp;
+    t_PixelDateFB.iLineBytes    = ptDispOpr->iXres * ptDispOpr->iBpp/8;
+    t_PixelDateFB.aucPixelDatas = ptDispOpr->pucDispMem;
     
-    // for(i=0;i<50;i++)
-    // {
-        // printf("%02x ",*(pt_pixelDatas.aucPixelDatas + i));
-        
-    // }
-    // printf("\n");
+    PicMerge(0,0,&t_pixelDatas,&t_PixelDateFB);
     
-    // unsigned char *aucPixelDatas;
-    
-    
-    // g_tBmpFileParser.FreePixelDatas(pt_pixelDatasTmp);
     return 0;
 }
 
