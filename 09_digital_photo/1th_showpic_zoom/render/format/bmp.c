@@ -1,4 +1,6 @@
 #include "pic_operation.h"
+#include "debug_manager.h"
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -65,11 +67,11 @@ static int CovertOneLine(unsigned int iWidth, unsigned short iSrcBpp, int iDstBp
     unsigned short *pwDstDatas16bpp = (unsigned short *)pudDstDatas;
     unsigned int   *pwDstDatas32bpp = (unsigned int *)pudDstDatas;
     
-    //printf("width:%d srcBpp:%d iDstBpp:%d srcAdd:%d DstAdd:%d\n",iWidth,iSrcBpp,iDstBpp,pudSrcDatas,pudDstDatas);
+    //DBG_PRINTF("width:%d srcBpp:%d iDstBpp:%d srcAdd:%d DstAdd:%d\n",iWidth,iSrcBpp,iDstBpp,pudSrcDatas,pudDstDatas);
     
     if(iSrcBpp != 24)
     {
-        printf("iSrcBpp is %d,not supported temporarily\n",iSrcBpp);
+        DBG_PRINTF("iSrcBpp is %d,not supported temporarily\n",iSrcBpp);
         return -1;
     }
     
@@ -124,7 +126,7 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
 
     file_size                   = bmp_header->bfSize;
     file_OffBits                = bmp_header->bfOffBits;
-    printf("off bits is %d\n",bmp_header->bfOffBits);
+    DBG_PRINTF("off bits is %d\n",bmp_header->bfOffBits);
         
     bmpinfo_header              = (BITMAPINFOHEADER *) (aFileHead + 14);    //sizeof(BITMAPFILEHEADER));
     iWidth                      = bmpinfo_header->biWidth;
@@ -133,8 +135,8 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
     
     if(iBmpBpp != 24)
     {
-        printf("iBmpBpp is %d,not supported temporarily\n",iBmpBpp);
-        printf("bmp header len is %d\n",sizeof(BITMAPFILEHEADER));
+        DBG_PRINTF("iBmpBpp is %d,not supported temporarily\n",iBmpBpp);
+        DBG_PRINTF("bmp header len is %d\n",sizeof(BITMAPFILEHEADER));
         return -1;
     }
     
@@ -144,7 +146,7 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
     ptPixelDatas->aucPixelDatas = malloc(iWidth * iHeight * ptPixelDatas->iBpp / 8);
     if (NULL == ptPixelDatas->aucPixelDatas)
     {
-        printf("malloc err\n");
+        DBG_PRINTF("malloc err\n");
         return -1;
     }
 
@@ -162,7 +164,7 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
         // {
             // for(i=0;i<iWidth;i++)
             // {
-                // printf("%02x ",*(ucSource + i));
+                // DBG_PRINTF("%02x ",*(ucSource + i));
             // }
             
         // }

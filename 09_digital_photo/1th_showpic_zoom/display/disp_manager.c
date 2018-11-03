@@ -38,7 +38,7 @@ void ShowDispOpr(void)
 
 	while (ptTmp)
 	{
-		printf("%02d %s\n", i++, ptTmp->name);
+		DBG_PRINTF("%02d %s\n", i++, ptTmp->name);
 		ptTmp = ptTmp->ptNext;
 	}
 }

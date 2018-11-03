@@ -41,6 +41,9 @@ int main(int argc,char ** argv)
         printf("%s <bmp_fiel>\n",argv[0]);
         return -1;
     }
+    DebugInit();
+    InitDebugChanel();
+    
     
     DisplayInit();
     
@@ -48,14 +51,14 @@ int main(int argc,char ** argv)
     ptDispOpr->DeviceInit();
     ptDispOpr->CleanScreen(0);
     
-    printf("iXres:%d\n",ptDispOpr->iXres);
-    printf("iYres:%d\n",ptDispOpr->iYres);
+    DBG_PRINTF("iXres:%d\n",ptDispOpr->iXres);
+    DBG_PRINTF("iYres:%d\n",ptDispOpr->iYres);
     
     /* open bmp file */
     iFdBmp = open(argv[1],O_RDWR);
     if(iFdBmp == -1)
     {
-        printf("cannot open %s\n",argv[1]);
+        DBG_PRINTF("cannot open %s\n",argv[1]);
     }
     
     /* use fstat fun to get fiel size*/
@@ -64,7 +67,7 @@ int main(int argc,char ** argv)
     pucBMPmem = (unsigned char *)mmap(NULL,tStatTmp.st_size,PROT_READ | PROT_WRITE, MAP_SHARED, iFdBmp, 0);
     if (pucBMPmem == (unsigned char *)-1)
     {
-        printf("mmap error!\n");
+        DBG_PRINTF("mmap error!\n");
         return -1;
     }
     
@@ -72,15 +75,15 @@ int main(int argc,char ** argv)
 
     if(ret != 0)
     {
-        printf("file is not bmp format \n");
+        DBG_PRINTF("file is not bmp format \n");
     }
     
     t_pixelDatas.iBpp = ptDispOpr->iBpp;
     g_tBmpFileParser.GetPixelDatas(pucBMPmem,&t_pixelDatas);
-    // printf("iwith is %d\n",t_pixelDatas.iWidth);
-    // printf("iHeight is %d\n",t_pixelDatas.iHeight);
-    // printf("iBpp is %d\n",t_pixelDatas.iBpp);
-    // printf("iLineBytes is %d\n",t_pixelDatas.iLineBytes);
+    // DBG_PRINTF("iwith is %d\n",t_pixelDatas.iWidth);
+    // DBG_PRINTF("iHeight is %d\n",t_pixelDatas.iHeight);
+    // DBG_PRINTF("iBpp is %d\n",t_pixelDatas.iBpp);
+    // DBG_PRINTF("iLineBytes is %d\n",t_pixelDatas.iLineBytes);
     
     t_PixelDateFB.iWidth        = ptDispOpr->iXres;
     t_PixelDateFB.iHeight       = ptDispOpr->iYres;
