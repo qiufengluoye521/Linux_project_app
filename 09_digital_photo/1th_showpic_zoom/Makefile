@@ -35,6 +35,7 @@ obj-y += display/
 obj-y += input/
 obj-y += debug/
 obj-y += render/
+obj-y += page/
 all : 
 	make -C ./ -f $(TOPDIR)/Makefile.build
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o

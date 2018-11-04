@@ -8,6 +8,7 @@
 #include <disp_manager.h>
 #include <input_manager.h>
 #include <pic_operation.h>
+#include <page_manager.h>
 #include <render.h>
 #include <string.h>
 
@@ -20,7 +21,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-extern T_PicFileParser g_tBmpFileParser;
+// extern T_PicFileParser g_tBmpFileParser;
 
 int main(int argc,char ** argv)
 {
@@ -29,8 +30,8 @@ int main(int argc,char ** argv)
     struct stat tStatTmp;
     unsigned char *pucBMPmem;
     int ret;
-    T_PixelDatas t_pixelDatas;
-    T_PixelDatas t_PixelDateFB;
+    // T_PixelDatas t_pixelDatas;
+    // T_PixelDatas t_PixelDateFB;
     
     int i;
     char chrTmp;
@@ -49,6 +50,9 @@ int main(int argc,char ** argv)
     
     InputInit();
     AllInputDevicesInit();
+    
+    PagesInit();
+    Page("main")->Run();
     
     // DisplayInit();
     
@@ -76,12 +80,12 @@ int main(int argc,char ** argv)
         return -1;
     }
     
-    ret = g_tBmpFileParser.isSupport(pucBMPmem);
+    // ret = g_tBmpFileParser.isSupport(pucBMPmem);
 
-    if(ret != 0)
-    {
-        DBG_PRINTF("file is not bmp format \n");
-    }
+    // if(ret != 0)
+    // {
+        // DBG_PRINTF("file is not bmp format \n");
+    // }
     
     // t_pixelDatas.iBpp = ptDispOpr->iBpp;
     // g_tBmpFileParser.GetPixelDatas(pucBMPmem,&t_pixelDatas);

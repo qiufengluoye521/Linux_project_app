@@ -68,12 +68,13 @@ void SelectAndInitDefaultDispDev(char *name)
 	}
 }
 
-int GetDispResolution(int *piXres, int *piYres)
+int GetDispResolution(int *piXres, int *piYres,int *iBPP)
 {
 	if (g_ptDefaultDispOpr)
 	{
 		*piXres = g_ptDefaultDispOpr->iXres;
 		*piYres = g_ptDefaultDispOpr->iYres;
+        *iBPP   = g_ptDefaultDispOpr->iBpp;
 		return 0;
 	}
 	else

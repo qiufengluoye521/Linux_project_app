@@ -10,6 +10,7 @@
 static struct tsdev *g_tTSDev;
 static int giXres;
 static int giYres;
+static int giBpp;
 
 static int TouchScreenDeviceInit(void);
 static int TouchScreenDeviceExit(void);
@@ -47,7 +48,7 @@ static int TouchScreenDeviceInit(void)
         return -1;
     }
 
-    if (GetDispResolution(&giXres, &giYres))
+    if (GetDispResolution(&giXres, &giYres,&giBpp))
     {
         return -1;
     }

@@ -17,7 +17,7 @@ int RegisterDispOpr(PT_DispOpr ptDispOpr);
 void ShowDispOpr(void);
 int DisplayInit(void);
 void SelectAndInitDefaultDispDev(char *name);
-int GetDispResolution(int *piXres, int *piYres);
+int GetDispResolution(int *piXres, int *piYres,int *iBPP);
 
 int FBInit(void);
 
