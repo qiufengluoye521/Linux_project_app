@@ -58,9 +58,14 @@ PT_DispOpr GetDispOpr(char *pcName)
 	return NULL;
 }
 
-void SelectDefaultDispDev(char *name)
+void SelectAndInitDefaultDispDev(char *name)
 {
 	g_ptDefaultDispOpr = GetDispOpr(name);
+	if (g_ptDefaultDispOpr)
+	{
+		g_ptDefaultDispOpr->DeviceInit();
+		g_ptDefaultDispOpr->CleanScreen(0);
+	}
 }
 
 int GetDispResolution(int *piXres, int *piYres)

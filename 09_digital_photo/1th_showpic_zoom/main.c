@@ -44,15 +44,17 @@ int main(int argc,char ** argv)
     DebugInit();
     InitDebugChanel();
     
-    
     DisplayInit();
+    SelectAndInitDefaultDispDev("fb");
     
-    ptDispOpr = GetDispOpr("fb");
-    ptDispOpr->DeviceInit();
-    ptDispOpr->CleanScreen(0);
+    // DisplayInit();
     
-    DBG_PRINTF("iXres:%d\n",ptDispOpr->iXres);
-    DBG_PRINTF("iYres:%d\n",ptDispOpr->iYres);
+    // ptDispOpr = GetDispOpr("fb");
+    // ptDispOpr->DeviceInit();
+    // ptDispOpr->CleanScreen(0);
+    
+    // DBG_PRINTF("iXres:%d\n",ptDispOpr->iXres);
+    // DBG_PRINTF("iYres:%d\n",ptDispOpr->iYres);
     
     /* open bmp file */
     iFdBmp = open(argv[1],O_RDWR);
@@ -78,20 +80,20 @@ int main(int argc,char ** argv)
         DBG_PRINTF("file is not bmp format \n");
     }
     
-    t_pixelDatas.iBpp = ptDispOpr->iBpp;
-    g_tBmpFileParser.GetPixelDatas(pucBMPmem,&t_pixelDatas);
-    // DBG_PRINTF("iwith is %d\n",t_pixelDatas.iWidth);
-    // DBG_PRINTF("iHeight is %d\n",t_pixelDatas.iHeight);
-    // DBG_PRINTF("iBpp is %d\n",t_pixelDatas.iBpp);
-    // DBG_PRINTF("iLineBytes is %d\n",t_pixelDatas.iLineBytes);
+    // t_pixelDatas.iBpp = ptDispOpr->iBpp;
+    // g_tBmpFileParser.GetPixelDatas(pucBMPmem,&t_pixelDatas);
+    // // DBG_PRINTF("iwith is %d\n",t_pixelDatas.iWidth);
+    // // DBG_PRINTF("iHeight is %d\n",t_pixelDatas.iHeight);
+    // // DBG_PRINTF("iBpp is %d\n",t_pixelDatas.iBpp);
+    // // DBG_PRINTF("iLineBytes is %d\n",t_pixelDatas.iLineBytes);
     
-    t_PixelDateFB.iWidth        = ptDispOpr->iXres;
-    t_PixelDateFB.iHeight       = ptDispOpr->iYres;
-    t_PixelDateFB.iBpp          = ptDispOpr->iBpp;
-    t_PixelDateFB.iLineBytes    = ptDispOpr->iXres * ptDispOpr->iBpp/8;
-    t_PixelDateFB.aucPixelDatas = ptDispOpr->pucDispMem;
+    // t_PixelDateFB.iWidth        = ptDispOpr->iXres;
+    // t_PixelDateFB.iHeight       = ptDispOpr->iYres;
+    // t_PixelDateFB.iBpp          = ptDispOpr->iBpp;
+    // t_PixelDateFB.iLineBytes    = ptDispOpr->iXres * ptDispOpr->iBpp/8;
+    // t_PixelDateFB.aucPixelDatas = ptDispOpr->pucDispMem;
     
-    PicMerge(0,0,&t_pixelDatas,&t_PixelDateFB);
+    // PicMerge(0,0,&t_pixelDatas,&t_PixelDateFB);
     
     return 0;
 }

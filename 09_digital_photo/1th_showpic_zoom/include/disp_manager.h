@@ -16,7 +16,7 @@ typedef struct DispOpr {
 int RegisterDispOpr(PT_DispOpr ptDispOpr);
 void ShowDispOpr(void);
 int DisplayInit(void);
-void SelectDefaultDispDev(char *name);
+void SelectAndInitDefaultDispDev(char *name);
 int GetDispResolution(int *piXres, int *piYres);
 
 int FBInit(void);
