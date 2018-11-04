@@ -47,6 +47,9 @@ int main(int argc,char ** argv)
     DisplayInit();
     SelectAndInitDefaultDispDev("fb");
     
+    InputInit();
+    AllInputDevicesInit();
+    
     // DisplayInit();
     
     // ptDispOpr = GetDispOpr("fb");
@@ -95,6 +98,7 @@ int main(int argc,char ** argv)
     
     // PicMerge(0,0,&t_pixelDatas,&t_PixelDateFB);
     
+    DBG_PRINTF("process finished \n");
     return 0;
 }
 

@@ -32,7 +32,7 @@ obj-y += main.o
 obj-y += display/
 #obj-y += encoding/
 #obj-y += fonts/
-#obj-y += input/
+obj-y += input/
 obj-y += debug/
 obj-y += render/
 all : 
