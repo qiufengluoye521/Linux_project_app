@@ -6,7 +6,7 @@
 typedef struct Layout {
     int iTopLeftX;
     int iTopLeftY;
-    int iBotRithtX;
+    int iBotRightX;
     int iBotRightY;
     char *strIconName;
 }T_Layout,*PT_Layout;

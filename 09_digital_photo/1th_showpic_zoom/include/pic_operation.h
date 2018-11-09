@@ -7,6 +7,7 @@ typedef struct PixelDatas {
 	int iHeight;
 	int iBpp;
 	int iLineBytes;
+    int iTotalBytes;
 	unsigned char *aucPixelDatas;
 }T_PixelDatas, *PT_PixelDatas;
 

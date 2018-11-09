@@ -51,6 +51,8 @@ int main(int argc,char ** argv)
     InputInit();
     AllInputDevicesInit();
     
+    AllocVideoMem(5);
+    
     PagesInit();
     Page("main")->Run();
     
