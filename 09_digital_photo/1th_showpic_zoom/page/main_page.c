@@ -6,6 +6,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <stdlib.h>
+#include <render.h>
 
 extern T_PicFileParser g_tBmpFileParser;
 
@@ -30,19 +32,13 @@ T_PageAction g_tMainPageAction =
 
 static void ShowMainPage(PT_Layout atLayout)
 {
-    int iFdBmp;
-    unsigned char * pucBMPmem;
     T_PixelDatas tOriginIconPixelDatas;
     T_PixelDatas tIconPixelDatas;
-    T_PixelDatas t_PixelDateFB;
     int iIconWidth;
 	int iIconHeight;
 	int iIconX;
 	int iIconY;
     int iXres, iYres, iBpp;
-    struct stat tStatTmp;
-    int ret;
-    PT_DispOpr ptDispOpr;
     PT_VideoMem ptVideoMem;
     int iError;
     
@@ -54,97 +50,86 @@ static void ShowMainPage(PT_Layout atLayout)
         return ;
     }
     
-    if (ptVideoMem->ePicState != PS_GENERATED)
-	{
-		GetDispResolution(&iXres, &iYres, &iBpp);
-		iIconHeight = iYres * 2 / 10;
-		iIconWidth  = iIconHeight * 2;
-		
-		iIconX = (iXres - iIconWidth)/2;
-		iIconY = iYres / 10;
-
-		tIconPixelDatas.iBpp        = iBpp;
-		tIconPixelDatas.iWidth      = iIconWidth;
-		tIconPixelDatas.iHeight     = iIconHeight;
-		tIconPixelDatas.iLineBytes  = iIconWidth * iBpp / 8;
-		tIconPixelDatas.iTotalBytes = tIconPixelDatas.iLineBytes * iIconHeight;
-		tIconPixelDatas.aucPixelDatas = malloc(tIconPixelDatas.iTotalBytes);
-		if (tIconPixelDatas.aucPixelDatas == NULL)
-		{
-			free(tIconPixelDatas.aucPixelDatas);
-			return;
-		}
-
-		while (atLayout->strIconName)
-		{
-			atLayout->iTopLeftX  = iIconX;
-			atLayout->iTopLeftY  = iIconY;
-			atLayout->iBotRightX = iIconX + iIconWidth - 1;
-			atLayout->iBotRightY = iIconY + iIconHeight - 1;
-
-			//iError = GetPixelDatasForIcon(atLayout->strIconName, &tOriginIconPixelDatas);
-			if (iError)
-			{
-				DBG_PRINTF("GetPixelDatasForIcon error!\n");
-				return;
-			}
-			//PicZoom(&tOriginIconPixelDatas, &tIconPixelDatas);
-			PicMerge(iIconX, iIconY, &tIconPixelDatas, &ptVideoMem->tPixelDatas);
-			//FreePixelDatasForIcon(&tOriginIconPixelDatas);
-			atLayout++;
-			iIconY +=  iYres * 3 / 10;
-		}
-		free(tIconPixelDatas.aucPixelDatas);
-		ptVideoMem->ePicState = PS_GENERATED;
-	}
-    return;
-    
-    /* 2. 图像刷到显存 */
+    /* 2. 描画数据 */
     if(ptVideoMem->ePicState != PS_GENERATED)
     {
         GetDispResolution(&iXres, &iYres, &iBpp);
+        iIconHeight = iYres * 2 / 10;
+        iIconWidth  = iIconHeight * 2;
         
-        iFdBmp = open(atLayout->strIconName,O_RDWR);
-        if(iFdBmp == -1)
-        {
-            DBG_PRINTF("cannot open %s\n",atLayout->strIconName);
-        }
-        
-        /* use fstat fun to get fiel size*/
-        fstat(iFdBmp,&tStatTmp);    
-        /* 文件或对象映射到内存 */
-        
-        pucBMPmem = (unsigned char *)mmap(NULL,tStatTmp.st_size,PROT_READ | PROT_WRITE, MAP_SHARED, iFdBmp, 0);
-        if (pucBMPmem == (unsigned char *)-1)
-        {
-            DBG_PRINTF("mmap error!\n");
-            return ;
-        }
-        
-        ret = g_tBmpFileParser.isSupport(pucBMPmem);
+        iIconX = (iXres - iIconWidth)/2;
+        iIconY = iYres / 10;
 
-        if(ret != 0)
+        tIconPixelDatas.iBpp        = iBpp;
+        tIconPixelDatas.iWidth      = iIconWidth;
+        tIconPixelDatas.iHeight     = iIconHeight;
+        tIconPixelDatas.iLineBytes  = iIconWidth * iBpp / 8;
+        tIconPixelDatas.iTotalBytes = tIconPixelDatas.iLineBytes * iIconHeight;
+        tIconPixelDatas.aucPixelDatas = malloc(tIconPixelDatas.iTotalBytes);
+        if (tIconPixelDatas.aucPixelDatas == NULL)
         {
-            DBG_PRINTF("file is not bmp format \n");
+            free(tIconPixelDatas.aucPixelDatas);
+            return;
         }
         
-        tIconPixelDatas.iBpp = iBpp;
-        g_tBmpFileParser.GetPixelDatas(pucBMPmem,&tIconPixelDatas);
+        /* 2.1 get pic datas from icon: store in tOriginIconPixelDatas */
+        iError = GetPixelDatasForIcon(atLayout->strIconName, &tOriginIconPixelDatas);
+        if (iError)
+        {
+            DBG_PRINTF("GetPixelDatasForIcon error!\n");
+            return;
+        }
         
-        DBG_PRINTF("iwith is %d\n",tIconPixelDatas.iWidth);
-        DBG_PRINTF("iHeight is %d\n",tIconPixelDatas.iHeight);
-        DBG_PRINTF("iBpp is %d\n",tIconPixelDatas.iBpp);
-        DBG_PRINTF("iLineBytes is %d\n",tIconPixelDatas.iLineBytes);
+        /* 2.2 pic size zoom to certain size */
+        PicZoom(&tOriginIconPixelDatas, &tIconPixelDatas);
+
+        // return;
         
-        ptDispOpr = GetDispOpr("fb");
-        t_PixelDateFB.iWidth        = ptDispOpr->iXres;
-        t_PixelDateFB.iHeight       = ptDispOpr->iYres;
-        t_PixelDateFB.iBpp          = ptDispOpr->iBpp;
-        t_PixelDateFB.iLineBytes    = ptDispOpr->iXres * ptDispOpr->iBpp/8;
-        t_PixelDateFB.aucPixelDatas = ptDispOpr->pucDispMem;
+        // /* 2.3 copy the pic datas to vide memery */
+        
+        // /* 2.4 vide memery to lcd */
+        
+        // iFdBmp = open(atLayout->strIconName,O_RDWR);
+        // if(iFdBmp == -1)
+        // {
+            // DBG_PRINTF("cannot open %s\n",atLayout->strIconName);
+        // }
+        
+        // /* use fstat fun to get fiel size*/
+        // fstat(iFdBmp,&tStatTmp);    
+        // /* 文件或对象映射到内存 */
+        
+        // pucBMPmem = (unsigned char *)mmap(NULL,tStatTmp.st_size,PROT_READ | PROT_WRITE, MAP_SHARED, iFdBmp, 0);
+        // if (pucBMPmem == (unsigned char *)-1)
+        // {
+            // DBG_PRINTF("mmap error!\n");
+            // return ;
+        // }
+        
+        // ret = g_tBmpFileParser.isSupport(pucBMPmem);
+
+        // if(ret != 0)
+        // {
+            // DBG_PRINTF("file is not bmp format \n");
+        // }
+        
+        // tIconPixelDatas.iBpp = iBpp;
+        // g_tBmpFileParser.GetPixelDatas(pucBMPmem,&tIconPixelDatas);
+        
+        // DBG_PRINTF("iwith is %d\n",tIconPixelDatas.iWidth);
+        // DBG_PRINTF("iHeight is %d\n",tIconPixelDatas.iHeight);
+        // DBG_PRINTF("iBpp is %d\n",tIconPixelDatas.iBpp);
+        // DBG_PRINTF("iLineBytes is %d\n",tIconPixelDatas.iLineBytes);
+        
+        // ptDispOpr = GetDispOpr("fb");
+        // t_PixelDateFB.iWidth        = ptDispOpr->iXres;
+        // t_PixelDateFB.iHeight       = ptDispOpr->iYres;
+        // t_PixelDateFB.iBpp          = ptDispOpr->iBpp;
+        // t_PixelDateFB.iLineBytes    = ptDispOpr->iXres * ptDispOpr->iBpp/8;
+        // t_PixelDateFB.aucPixelDatas = ptDispOpr->pucDispMem;
         
         //PicMerge(0,0,&tIconPixelDatas,&t_PixelDateFB);
-        PicMerge(0,0,&tIconPixelDatas,ptVideoMem->tPixelDatas);
+        // PicMerge(0,0,&tIconPixelDatas,ptVideoMem->tPixelDatas);
     }
     return;
     
@@ -154,44 +139,44 @@ static void ShowMainPage(PT_Layout atLayout)
     // while(atLayout->strIconName)
     // {
         /* open bmp file */
-        iFdBmp = open(atLayout->strIconName,O_RDWR);
-        if(iFdBmp == -1)
-        {
-            DBG_PRINTF("cannot open %s\n",atLayout->strIconName);
-        }
+        // iFdBmp = open(atLayout->strIconName,O_RDWR);
+        // if(iFdBmp == -1)
+        // {
+            // DBG_PRINTF("cannot open %s\n",atLayout->strIconName);
+        // }
         
-        /* use fstat fun to get fiel size*/
-        fstat(iFdBmp,&tStatTmp);    
-        /* 文件或对象映射到内存 */
-        pucBMPmem = (unsigned char *)mmap(NULL,tStatTmp.st_size,PROT_READ | PROT_WRITE, MAP_SHARED, iFdBmp, 0);
-        if (pucBMPmem == (unsigned char *)-1)
-        {
-            DBG_PRINTF("mmap error!\n");
-            return -1;
-        }
+        // /* use fstat fun to get fiel size*/
+        // fstat(iFdBmp,&tStatTmp);    
+        // /* 文件或对象映射到内存 */
+        // pucBMPmem = (unsigned char *)mmap(NULL,tStatTmp.st_size,PROT_READ | PROT_WRITE, MAP_SHARED, iFdBmp, 0);
+        // if (pucBMPmem == (unsigned char *)-1)
+        // {
+            // DBG_PRINTF("mmap error!\n");
+            // return -1;
+        // }
         
-        ret = g_tBmpFileParser.isSupport(pucBMPmem);
+        // ret = g_tBmpFileParser.isSupport(pucBMPmem);
 
-        if(ret != 0)
-        {
-            DBG_PRINTF("file is not bmp format \n");
-        }
+        // if(ret != 0)
+        // {
+            // DBG_PRINTF("file is not bmp format \n");
+        // }
         
-        tIconPixelDatas.iBpp = iBpp;
-        g_tBmpFileParser.GetPixelDatas(pucBMPmem,&tIconPixelDatas);
-        DBG_PRINTF("iwith is %d\n",tIconPixelDatas.iWidth);
-        DBG_PRINTF("iHeight is %d\n",tIconPixelDatas.iHeight);
-        DBG_PRINTF("iBpp is %d\n",tIconPixelDatas.iBpp);
-        DBG_PRINTF("iLineBytes is %d\n",tIconPixelDatas.iLineBytes);
+        // tIconPixelDatas.iBpp = iBpp;
+        // g_tBmpFileParser.GetPixelDatas(pucBMPmem,&tIconPixelDatas);
+        // DBG_PRINTF("iwith is %d\n",tIconPixelDatas.iWidth);
+        // DBG_PRINTF("iHeight is %d\n",tIconPixelDatas.iHeight);
+        // DBG_PRINTF("iBpp is %d\n",tIconPixelDatas.iBpp);
+        // DBG_PRINTF("iLineBytes is %d\n",tIconPixelDatas.iLineBytes);
         
-        ptDispOpr = GetDispOpr("fb");
-        t_PixelDateFB.iWidth        = ptDispOpr->iXres;
-        t_PixelDateFB.iHeight       = ptDispOpr->iYres;
-        t_PixelDateFB.iBpp          = ptDispOpr->iBpp;
-        t_PixelDateFB.iLineBytes    = ptDispOpr->iXres * ptDispOpr->iBpp/8;
-        t_PixelDateFB.aucPixelDatas = ptDispOpr->pucDispMem;
+        // ptDispOpr = GetDispOpr("fb");
+        // t_PixelDateFB.iWidth        = ptDispOpr->iXres;
+        // t_PixelDateFB.iHeight       = ptDispOpr->iYres;
+        // t_PixelDateFB.iBpp          = ptDispOpr->iBpp;
+        // t_PixelDateFB.iLineBytes    = ptDispOpr->iXres * ptDispOpr->iBpp/8;
+        // t_PixelDateFB.aucPixelDatas = ptDispOpr->pucDispMem;
         
-        PicMerge(0,0,&tIconPixelDatas,&t_PixelDateFB);
+        // PicMerge(0,0,&tIconPixelDatas,&t_PixelDateFB);
     // }
     
 }
@@ -203,7 +188,7 @@ static void MainPageRun(void)
 }
 static int MainPageGetInputEvent(PT_Layout atLayout, PT_InputEvent ptInputEvent)
 {
-    ;
+    return 0;
 }
 
 

@@ -25,16 +25,11 @@
 
 int main(int argc,char ** argv)
 {
-    PT_DispOpr ptDispOpr;
     int iFdBmp;
     struct stat tStatTmp;
     unsigned char *pucBMPmem;
-    int ret;
     // T_PixelDatas t_pixelDatas;
     // T_PixelDatas t_PixelDateFB;
-    
-    int i;
-    char chrTmp;
     
     if(argc != 2)
     {

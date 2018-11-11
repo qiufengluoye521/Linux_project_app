@@ -14,7 +14,8 @@ OBJDUMP		= $(CROSS_COMPILE)objdump
 export AS LD CC CPP AR NM
 export STRIP OBJCOPY OBJDUMP
 
-CFLAGS := -Wall -O2 -g
+CFLAGS := -Wall -Werror -O2 -g
+#CFLAGS := -Wall -O2 -g
 CFLAGS += -I $(shell pwd)/include
 
 LDFLAGS := -lm -lfreetype -lts -lpthread
@@ -36,6 +37,7 @@ obj-y += input/
 obj-y += debug/
 obj-y += render/
 obj-y += page/
+obj-y += file/
 all : 
 	make -C ./ -f $(TOPDIR)/Makefile.build
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o

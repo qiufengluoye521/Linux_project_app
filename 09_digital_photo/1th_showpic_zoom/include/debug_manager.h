@@ -14,5 +14,10 @@ int InitDebugChanel(void);
 int DebugPrint(const char *pcFormat, ...);
 void Set_Dbg_Level(int lel);
 void Set_Dbg_Channel(char * dbg_cnl);
+int StdoutInit(void);
+int NetPrintInit(void);
+int RegisterDebugOpr(PT_DebugOpr ptDebugOpr);
+int DebugInit(void);
+
 
 #endif  // #ifndef __DEBUG_MANAGER_H__

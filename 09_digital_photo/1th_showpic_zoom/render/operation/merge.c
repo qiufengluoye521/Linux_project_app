@@ -16,4 +16,6 @@ int PicMerge(int x_start,int y_start,T_PixelDatas * t_pixel_smlData,T_PixelDatas
         puc_dstData     += t_pixel_bigData->iLineBytes;
         puc_sourceData  += t_pixel_smlData->iLineBytes;
     }
+
+    return 0;
 }

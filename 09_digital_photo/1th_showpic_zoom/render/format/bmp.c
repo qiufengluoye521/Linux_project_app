@@ -62,10 +62,8 @@ static int CovertOneLine(unsigned int iWidth, unsigned short iSrcBpp, int iDstBp
     unsigned int greenTmp;
     unsigned int blueTmp;
     int pos = 0;
-    int des_pos = 0;
     unsigned int dwColor;
     unsigned short *pwDstDatas16bpp = (unsigned short *)pudDstDatas;
-    unsigned int   *pwDstDatas32bpp = (unsigned int *)pudDstDatas;
     
     //DBG_PRINTF("width:%d srcBpp:%d iDstBpp:%d srcAdd:%d DstAdd:%d\n",iWidth,iSrcBpp,iDstBpp,pudSrcDatas,pudDstDatas);
     
@@ -77,7 +75,7 @@ static int CovertOneLine(unsigned int iWidth, unsigned short iSrcBpp, int iDstBp
     
     if(iDstBpp == 24)
     {
-        strncpy(pudDstDatas, pudSrcDatas, iWidth * iDstBpp / 8);
+        memcpy(pudDstDatas, pudSrcDatas, iWidth*3);
     } else
     {
         for(i = 0;i < iWidth;i++)
@@ -120,7 +118,6 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
     unsigned char *ucSource;
     unsigned char *ucDest;
     int y;
-    int i;
 
     bmp_header                  = (BITMAPFILEHEADER *)aFileHead;
 
@@ -149,6 +146,7 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
         DBG_PRINTF("malloc err\n");
         return -1;
     }
+    DBG_PRINTF("ptPixelDatas->aucPixelDatas add:%x\n",ptPixelDatas->aucPixelDatas);
 
 
     iLineWidthReal              = iWidth * iBmpBpp / 8;

@@ -1,4 +1,6 @@
 #include "debug_manager.h"
+#include <stdio.h>
+ #include <string.h>
 
 static int StdOutDebugPrint(char* dbg_buf)
 {

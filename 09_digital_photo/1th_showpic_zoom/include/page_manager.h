@@ -22,5 +22,7 @@ typedef struct PageAction {
 PT_PageAction Page(char *pcName);
 int RegisterPageAction(PT_PageAction ptPageAction);
 int MainPageInit(void);
+int PagesInit(void);
+
 
 #endif // __PAGE_MANAGER_H__

@@ -1,5 +1,7 @@
 #include <config.h>
 #include <page_manager.h>
+#include <string.h>
+
 
 
 static PT_PageAction g_ptPageActionHead;

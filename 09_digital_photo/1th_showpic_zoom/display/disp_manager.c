@@ -102,6 +102,7 @@ int AllocVideoMem(int iNum)
     {
         return -1;
     }
+    DBG_PRINTF("pt_new add:%x\n",pt_new);
     
     iVMSize = iXres * iYres * iBpp / 8;
     
@@ -132,6 +133,7 @@ int AllocVideoMem(int iNum)
         {
             return -1;
         }
+        DBG_PRINTF("pt_new%d add:%x\n",i,pt_new);
         
         pt_new->tPixelDatas.aucPixelDatas   = (unsigned char *)(pt_new + 1);
         pt_new->iID                         = 0;

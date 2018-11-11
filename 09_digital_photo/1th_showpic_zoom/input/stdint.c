@@ -41,6 +41,8 @@ static int stdintDeviceInit(void)
 
     //set the terminal attributes.
     tcsetattr(STDIN_FILENO, TCSANOW, &t_termios);
+
+    return 0;
 }
 
 static int stdintDeviceExit(void)
@@ -53,6 +55,8 @@ static int stdintDeviceExit(void)
     t_termios.c_lflag |= ICANON;
     //set the terminal attributes.
     tcsetattr(STDIN_FILENO, TCSANOW, &t_termios);
+
+    return 0;
 }
 
 static int stdintGetInputEvent(PT_InputEvent ptInputEvent)

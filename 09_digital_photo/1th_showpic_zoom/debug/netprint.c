@@ -10,6 +10,7 @@
 #include <signal.h>
 #include "config.h"
 #include <pthread.h>
+#include <stdlib.h>
 
 #define SERVER_PORT 5678
 #define PRINT_BUF_SIZE   (16*1024)
@@ -39,7 +40,7 @@ static T_DebugOpr g_tNetPrintDebugOpr = {
     .Debug_PRINT    = NetDebugOprPrint,
 };
 
-/* 使用环形缓冲区用于打印，环形缓冲区基本的四个函数：
+/* 使用环形缓冲区用于打印，环形缓冲区基本的四个函数�?
  * 1. isFull        judge if the buffer is full
  * 2. isEmpty       judge if the buffer is empty
  * 3. PutData       put data into buffer
@@ -84,7 +85,7 @@ static int GetData(char *pcVal)
 
 static void *recive_threadfunc(void *pvoid)
 {
-    int iAddrLen;
+    socklen_t iAddrLen;
     char cRecvBuf[1000];
     int iRecvLen;
     int dbg_level = 0;
@@ -153,7 +154,7 @@ static void *send_threadfunc(void *pvoid)
 static int NetDebugOprInit(void)
 {
     int iRet;
-    struct sockaddr_in tSocketClientAddr;
+
     
     g_pcNetDbgBuffer = malloc(PRINT_BUF_SIZE);
 
@@ -177,7 +178,7 @@ static int NetDebugOprInit(void)
         return -1;
     }
     
-    /* 创建接收线程和发送线程 */
+    /* 创建接收线程和发送线�?*/
     pthread_create(&g_trecive_tid, NULL, &recive_threadfunc, NULL);
     pthread_create(&g_tsend_tid, NULL, &send_threadfunc, NULL);
     
@@ -187,10 +188,11 @@ static int NetDebugOprExit(void)
 {
     close(iSocketServer);
     free(g_pcNetDbgBuffer);
+    
+    return 0;
 }
 static int NetDebugOprPrint(char* dbg_buf)
 {
-    char cRecvBuf[1000];
     int str_len = 0;
     int i;
     
@@ -200,7 +202,6 @@ static int NetDebugOprPrint(char* dbg_buf)
     {
         PutData(dbg_buf[i]);
     }
-    
     
     pthread_cond_signal(&g_tNetDbgCondvar);
 
@@ -212,6 +213,7 @@ static int NetDebugOprPrint(char* dbg_buf)
                       // // (const struct sockaddr *)&g_tSocketClientAddr, iAddrLen);
     // iSendLen = sendto(iSocketServer, cRecvBuf, str_len, 0,
                       // (const struct sockaddr *)&g_tSocketClientAddr, iAddrLen);
+    return 0;
 }
 
 int NetPrintInit(void)

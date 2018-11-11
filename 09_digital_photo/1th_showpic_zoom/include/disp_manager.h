@@ -42,6 +42,9 @@ int DisplayInit(void);
 void SelectAndInitDefaultDispDev(char *name);
 int GetDispResolution(int *piXres, int *piYres,int *iBPP);
 int ID(char *strName);
+PT_VideoMem GetVideoMem(int iID, int bCur);
+int AllocVideoMem(int iNum);
+
 
 int FBInit(void);
 

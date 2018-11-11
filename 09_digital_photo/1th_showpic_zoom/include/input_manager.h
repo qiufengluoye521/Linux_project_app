@@ -34,6 +34,9 @@ void ShowInputOpr(void);
 int AllInputDevicesInit(void);
 int GetInputEvent(PT_InputEvent ptInputEvent);
 int InputInit(void);
+int StdinInit(void);
+int TouchScreenInit(void);
+
 
 
 #endif      //__INPUT_MANAGER_H__

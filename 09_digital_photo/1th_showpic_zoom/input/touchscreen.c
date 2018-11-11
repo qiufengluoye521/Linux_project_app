@@ -1,9 +1,11 @@
 #include <input_manager.h>
+#include <disp_manager.h>
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <tslib.h>
 #include <config.h>
+
 
 /* ²Î¿¼tslibÀïµÄts_print.c */
 
