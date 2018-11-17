@@ -50,8 +50,6 @@ int main(int argc,char ** argv)
     
     PagesInit();
     Page("main")->Run();
-
-    return 0;
     
     // DisplayInit();
     

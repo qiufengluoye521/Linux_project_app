@@ -139,7 +139,7 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
     
     ptPixelDatas->iWidth        = iWidth;
     ptPixelDatas->iHeight       = iHeight;
-    ptPixelDatas->iLineBytes    = iWidth * iBmpBpp / 8;
+    ptPixelDatas->iLineBytes    = iWidth * ptPixelDatas->iBpp / 8;
     ptPixelDatas->aucPixelDatas = malloc(iWidth * iHeight * ptPixelDatas->iBpp / 8);
     if (NULL == ptPixelDatas->aucPixelDatas)
     {
