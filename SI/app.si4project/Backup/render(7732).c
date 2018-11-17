@@ -5,15 +5,6 @@
 
 extern T_PicFileParser g_tBmpFileParser;
 
-void FlushVideoMemToDev(PT_VideoMem ptVideoMem)
-{
-    if(!ptVideoMem->bDevFrameBuffer)
-    {
-        GetDefaultDispDev()->ShowPage(ptVideoMem);
-    }
-}
-
-
 int GetPixelDatasForIcon(char *strFileName, PT_PixelDatas ptPixelDatas)
 {
     T_FileMap tFileMap;
@@ -48,12 +39,6 @@ int GetPixelDatasForIcon(char *strFileName, PT_PixelDatas ptPixelDatas)
     
     return 0;
 }
-
-void FreePixelDatasForIcon(PT_PixelDatas ptPixelDatas)
-{
-	g_tBmpFileParser.FreePixelDatas(ptPixelDatas);
-}
-
 
 // int GetFontPixel()
 // {

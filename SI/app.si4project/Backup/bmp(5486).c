@@ -175,8 +175,7 @@ int GetPixelDatasFrmBmp(unsigned char *aFileHead, PT_PixelDatas ptPixelDatas)
 
 int FreeBmpPixelDatas(PT_PixelDatas ptPixelDatas)
 {
-    DBG_PRINTF("FreeBmpPixelDatas add:%x\n",ptPixelDatas);
-    //free(ptPixelDatas);
+    free(ptPixelDatas);
     
     return 0;
 }

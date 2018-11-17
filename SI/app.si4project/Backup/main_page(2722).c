@@ -82,17 +82,12 @@ static void ShowMainPage(PT_Layout atLayout)
         
         /* 2.2 pic size zoom to certain size */
         PicZoom(&tOriginIconPixelDatas, &tIconPixelDatas);
+
+        // return;
         
         // /* 2.3 copy the pic datas to vide memery */
-        PicMerge(50,20,&tIconPixelDatas,&ptVideoMem->tPixelDatas);
-        //FreePixelDatasForIcon(&tOriginIconPixelDatas);
         
         // /* 2.4 vide memery to lcd */
-        DBG_PRINTF("FlushVideoMemToDev\n");
-        FlushVideoMemToDev(ptVideoMem);
-        DBG_PRINTF("ptVideoMem.iId:%d\n",ptVideoMem->iID);
-        DBG_PRINTF("ptVideoMem.bDevFrameBuffer:%d\n",ptVideoMem->bDevFrameBuffer);
-        //DBG_PRINTF("ptVideoMem.iId:%d\n",ptVideoMem.iID);
         
         // iFdBmp = open(atLayout->strIconName,O_RDWR);
         // if(iFdBmp == -1)

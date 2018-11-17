@@ -141,7 +141,7 @@ int AllocVideoMem(int iNum)
         
         pt_new->tPixelDatas.aucPixelDatas   = (unsigned char *)(pt_new + 1);
         pt_new->iID                         = 0;
-        pt_new->bDevFrameBuffer             = 0;
+        pt_new->bDevFrameBuffer             = 1;
         pt_new->eVideoMemState              = VMS_FREE;
         pt_new->ePicState                   = PS_BLANK;
         pt_new->tPixelDatas.iWidth          = iXres;

@@ -33,6 +33,7 @@ typedef struct DispOpr {
 	int (*DeviceInit)(void);
 	int (*ShowPixel)(int iPenX, int iPenY, unsigned int dwColor);
 	int (*CleanScreen)(unsigned int dwBackColor);
+    int (*ShowPage)(PT_VideoMem ptVideoMem);
 	struct DispOpr *ptNext;
 }T_DispOpr, *PT_DispOpr;
 
@@ -40,6 +41,7 @@ int RegisterDispOpr(PT_DispOpr ptDispOpr);
 void ShowDispOpr(void);
 int DisplayInit(void);
 void SelectAndInitDefaultDispDev(char *name);
+PT_DispOpr GetDefaultDispDev(void);
 int GetDispResolution(int *piXres, int *piYres,int *iBPP);
 int ID(char *strName);
 PT_VideoMem GetVideoMem(int iID, int bCur);

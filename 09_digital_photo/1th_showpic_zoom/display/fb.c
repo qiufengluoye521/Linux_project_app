@@ -11,6 +11,7 @@
 static int FBDeviceInit(void);
 static int FBShowPixel(int iX, int iY, unsigned int dwColor);
 static int FBCleanScreen(unsigned int dwBackColor);
+static int FBShowPage(PT_VideoMem ptVideoMem);
 
 
 static int g_fd;
@@ -28,6 +29,7 @@ static T_DispOpr g_tFBOpr = {
 	.DeviceInit  = FBDeviceInit,
 	.ShowPixel   = FBShowPixel,
 	.CleanScreen = FBCleanScreen,
+	.ShowPage    = FBShowPage,
 };
 
 static int FBDeviceInit(void)
@@ -122,6 +124,11 @@ static int FBShowPixel(int iX, int iY, unsigned int dwColor)
 		}
 	}
 
+	return 0;
+}
+static int FBShowPage(PT_VideoMem ptVideoMem)
+{
+	memcpy(g_tFBOpr.pucDispMem, ptVideoMem->tPixelDatas.aucPixelDatas, ptVideoMem->tPixelDatas.iTotalBytes);
 	return 0;
 }
 

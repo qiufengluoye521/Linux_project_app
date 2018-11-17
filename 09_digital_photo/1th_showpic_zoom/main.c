@@ -51,6 +51,8 @@ int main(int argc,char ** argv)
     PagesInit();
     Page("main")->Run();
 
+    DBG_PRINTF("process finished \n");
+
     return 0;
     
     // DisplayInit();

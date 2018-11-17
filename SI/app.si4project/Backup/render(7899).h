@@ -7,12 +7,9 @@
 #include <page_manager.h>
 
 
-void FlushVideoMemToDev(PT_VideoMem ptVideoMem);
 int PicZoom(PT_PixelDatas ptOriginPic, PT_PixelDatas ptZoomPic);
 int PicMerge(int iX, int iY, PT_PixelDatas ptSmallPic, PT_PixelDatas ptBigPic);
 int GetPixelDatasForIcon(char *strFileName, PT_PixelDatas ptPixelDatas);
-void FreePixelDatasForIcon(PT_PixelDatas ptPixelDatas);
-
 
 
 #endif /* _RENDER_H */
