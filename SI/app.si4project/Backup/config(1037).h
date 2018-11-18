@@ -14,6 +14,6 @@
 #define DBG_PRINTF DebugPrint
 //#define DBG_PRINTF printf
 
-#define ICON_PATH "/dev/icon/"
+#define ICON_PATH ""
 
 #endif /* _CONFIG_H */

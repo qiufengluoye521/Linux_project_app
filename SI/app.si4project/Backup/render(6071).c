@@ -22,8 +22,7 @@ int GetPixelDatasForIcon(char *strFileName, PT_PixelDatas ptPixelDatas)
     
     snprintf(tFileMap.strFileName,128,"%s%s",ICON_PATH,strFileName);
     tFileMap.strFileName[127] = '\0';
-
-    DBG_PRINTF("mapfile name:%s\n",tFileMap.strFileName);
+    
     iError = MapFile(&tFileMap);
     if(iError)
     {

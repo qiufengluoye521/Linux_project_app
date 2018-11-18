@@ -12,10 +12,10 @@
 extern T_PicFileParser g_tBmpFileParser;
 
 static T_Layout g_atMainPageLayout[] = {
-    {0,0,0,0,"browse_mode.bmp"},
-    {0,0,0,0,"continue_mod.bmp"},
     {0,0,0,0,"setting.bmp"},
-    {0,0,0,0,NULL},
+    {0,50,0,0,"setting.bmp"},
+    {0,100,0,0,"setting.bmp"},
+    {0,150,0,0,NULL},
 };
 
 static void MainPageRun(void);
@@ -71,38 +71,27 @@ static void ShowMainPage(PT_Layout atLayout)
             free(tIconPixelDatas.aucPixelDatas);
             return;
         }
-        /* process every icon */
-        while(atLayout->strIconName)
+        
+        /* 2.1 get pic datas from icon: store in tOriginIconPixelDatas */
+        iError = GetPixelDatasForIcon(atLayout->strIconName, &tOriginIconPixelDatas);
+        if (iError)
         {
-            atLayout->iTopLeftX     = iIconX;
-            atLayout->iTopLeftY     = iIconY;
-            atLayout->iBotRightX    = iIconX + iIconWidth - 1;
-            atLayout->iBotRightY    = iIconY + iIconHeight - 1;
-                
-            
-            /* 2.1 get pic datas from icon: store in tOriginIconPixelDatas */
-            iError = GetPixelDatasForIcon(atLayout->strIconName, &tOriginIconPixelDatas);
-            if (iError)
-            {
-                DBG_PRINTF("GetPixelDatasForIcon error!\n");
-                return;
-            }
-            
-            /* 2.2 pic size zoom to certain size */
-            PicZoom(&tOriginIconPixelDatas, &tIconPixelDatas);
-            
-            /* 2.3 copy the pic datas to vide memery */
-            PicMerge(iIconX,iIconY,&tIconPixelDatas,&ptVideoMem->tPixelDatas);
-            //FreePixelDatasForIcon(&tOriginIconPixelDatas);
-            atLayout ++;
-            iIconY +=  iYres * 3 / 10;
+            DBG_PRINTF("GetPixelDatasForIcon error!\n");
+            return;
         }
         
-        /* 2.4 vide memery to lcd */
-        FlushVideoMemToDev(ptVideoMem);
-
+        /* 2.2 pic size zoom to certain size */
+        PicZoom(&tOriginIconPixelDatas, &tIconPixelDatas);
         
-
+        // /* 2.3 copy the pic datas to vide memery */
+        PicMerge(50,20,&tIconPixelDatas,&ptVideoMem->tPixelDatas);
+        //FreePixelDatasForIcon(&tOriginIconPixelDatas);
+        
+        // /* 2.4 vide memery to lcd */
+        DBG_PRINTF("FlushVideoMemToDev\n");
+        FlushVideoMemToDev(ptVideoMem);
+        DBG_PRINTF("ptVideoMem.iId:%d\n",ptVideoMem->iID);
+        DBG_PRINTF("ptVideoMem.bDevFrameBuffer:%d\n",ptVideoMem->bDevFrameBuffer);
         //DBG_PRINTF("ptVideoMem.iId:%d\n",ptVideoMem.iID);
         
         // iFdBmp = open(atLayout->strIconName,O_RDWR);
