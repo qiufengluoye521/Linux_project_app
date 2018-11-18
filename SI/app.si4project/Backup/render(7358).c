@@ -64,22 +64,14 @@ static void InvertButton(PT_Layout ptLayout)
     PT_DispOpr ptDispOpr = GetDefaultDispDev();
 
     pucVideoMem = ptDispOpr->pucDispMem;
-    DBG_PRINTF("InvertButton pucVideoMem add:%x\n",pucVideoMem);
-    DBG_PRINTF("topleftx:%d",ptLayout->iTopLeftX);
-    DBG_PRINTF("toplefty:%d",ptLayout->iTopLeftY);
-    DBG_PRINTF("width:%d\n",ptDispOpr->iLineWidth);
-    DBG_PRINTF("ibpp:%d\n",ptDispOpr->iBpp);
     pucVideoMem += ptLayout->iTopLeftY * ptDispOpr->iLineWidth + ptLayout->iTopLeftX * ptDispOpr->iBpp / 8; /* ¨ª?¡À¨º?¨²Framebuffer?D¦Ì?¦Ì??¡¤ */
     iButtonWidthBytes = (ptLayout->iBotRightX - ptLayout->iTopLeftX) * ptDispOpr->iBpp / 8;
-
-    DBG_PRINTF("InvertButton pucVideoMem add:%x\n",pucVideoMem);
 
     for (iY = ptLayout->iTopLeftY; iY <= ptLayout->iBotRightY; iY++)
     {
         for (i = 0; i < iButtonWidthBytes; i++)
         {
             pucVideoMem[i] = ~pucVideoMem[i];  /* ¨¨?¡¤¡ä */
-            //pucVideoMem[i] = 0xFF;  /* ¨¨?¡¤¡ä */
         }
         pucVideoMem += ptDispOpr->iLineWidth;
     }

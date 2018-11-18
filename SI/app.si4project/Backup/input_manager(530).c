@@ -51,16 +51,16 @@ void *threadfunc(void *pvoid)
     while(1)
     {
         if(0 == PGetInputEvent(&tInputEventTmp)) {
-            //DebugPrint("get input event\n");
-            /* 读到输入状态值，唤醒主线�?*/
+            DebugPrint("get input event\n");
+            /* 读到输入状态值，唤醒主线程 */
             /* 访问临界资源前，先获得互斥量 */
             pthread_mutex_lock(&mutex);
             gtInputEvent = tInputEventTmp;
-            /* 唤醒主线�?*/
+            /* 唤醒主线程 */
             pthread_cond_signal(&condvar);
-            /* 释放互斥�?*/
+            /* 释放互斥量 */
             pthread_mutex_unlock(&mutex);
-            //DebugPrint("pthread_mutex_unlock\n");
+            DebugPrint("pthread_mutex_unlock\n");
         } 
     }
         
@@ -84,15 +84,15 @@ int AllInputDevicesInit(void)
 
 int GetInputEvent(PT_InputEvent ptInputEvent)
 {
-    //DebugPrint("enter GetInputEvent fun\r\n");
+    DebugPrint("enter GetInputEvent fun\r\n");
     /* 访问临界资源前，先获得互斥量 */
     pthread_mutex_lock(&mutex);
-    /* 休眠，等�?pthread_cond_signal(&g_tConVar)函数来唤�?*/
-    //DebugPrint("pthread_cond_wait\r\n");
+    /* 休眠，等待 pthread_cond_signal(&g_tConVar)函数来唤醒 */
+    DebugPrint("pthread_cond_wait\r\n");
     pthread_cond_wait(&condvar, &mutex);
 
     *ptInputEvent = gtInputEvent;
-    //DebugPrint("ptInputEvent = gtInputEvent will return\r\n");
+    DebugPrint("ptInputEvent = gtInputEvent will return\r\n");
     pthread_mutex_unlock(&mutex);
     
     return 0;

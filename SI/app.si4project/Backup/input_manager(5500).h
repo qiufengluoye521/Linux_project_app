@@ -18,10 +18,6 @@ typedef struct InputEvent {
     struct timeval tTime;
     int iType;              /*stdint,touchsceen*/
     int iVal;
-    int iX;
-    int iY;
-    int iKey;
-    int iPressure;
 }T_InputEvent,*PT_InputEvent;
 
 typedef struct InputOpr {

@@ -122,14 +122,12 @@ static void MainPageRun(void)
     while (1)
     {
         iIndex = MainPageGetInputEvent(g_atMainPageLayout, &tInputEvent);
-        DBG_PRINTF("pressed state %d\n",tInputEvent.iPressure);
+        DBG_PRINTF("get input event\n");
         if (tInputEvent.iPressure == 0)
         {
-            //DBG_PRINTF("tInputEvent.iPressure is 0 \n");
             /* 如果是松开 */
             if (bPressed)
             {
-                //DBG_PRINTF("release state\n");
                 /* 曾经有按钮被按下 */
                 ReleaseButton(&g_atMainPageLayout[iIndexPressed]);
                 bPressed = 0;
@@ -138,17 +136,14 @@ static void MainPageRun(void)
         }
         else
         {
-            //DBG_PRINTF("tInputEvent.iPressure is not 0 \n");
             /* 按下状态 */
             if (iIndex != -1)
             {
-                //DBG_PRINTF("release state,bPressed:%d\n",bPressed);
                 if (!bPressed)
                 {
                     /* 未曾按下按钮 */
                     bPressed = 1;
                     iIndexPressed = iIndex;
-                    //DBG_PRINTF("PressButton :%d\n",iIndexPressed);
                     PressButton(&g_atMainPageLayout[iIndexPressed]);
                 }
             }

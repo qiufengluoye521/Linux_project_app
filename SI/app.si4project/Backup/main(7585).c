@@ -28,7 +28,15 @@ int main(int argc,char ** argv)
     int iFdBmp;
     struct stat tStatTmp;
     unsigned char *pucBMPmem;
+    // T_PixelDatas t_pixelDatas;
+    // T_PixelDatas t_PixelDateFB;
     
+    if(argc != 2)
+    {
+        printf("Usage:\n");
+        printf("%s <bmp_fiel>\n",argv[0]);
+        return -1;
+    }
     DebugInit();
     InitDebugChanel();
     

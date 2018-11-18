@@ -1,20 +1,8 @@
----- malloc Matches (19 in 16 files) ----
-GetPixelDatasFrmBmp in bmp.c (09_digital_photo\1th_showpic_zoom\render\format) :     ptPixelDatas->aucPixelDatas = malloc(iWidth * iHeight * ptPixelDatas->iBpp / 8);
-GetPixelDatasFrmBmp in bmp.c (09_digital_photo\1th_showpic_zoom\render\format) :         DBG_PRINTF("malloc err\n");
-AllocVideoMem in disp_manager.c (09_digital_photo\1th_showpic_zoom\display) :     pt_new = malloc(sizeof(T_VideoMem));
-AllocVideoMem in disp_manager.c (09_digital_photo\1th_showpic_zoom\display) :         pt_new = malloc(sizeof(T_VideoMem) + iVMSize);
-ShowNextPage in draw.c (04.show_file\draw) : 		ptPage = malloc(sizeof(T_PageDesc));
-ShowNextPage in draw.c (04.show_file_my\draw) : 		ptPage = malloc(sizeof(T_PageDesc));
-ShowNextPage in draw.c (05.show_file_input\01.show_file_input_query\draw) : 		ptPage = malloc(sizeof(T_PageDesc));
-ShowNextPage in draw.c (05.show_file_input\02.show_file_input_select\draw) : 		ptPage = malloc(sizeof(T_PageDesc));
-ShowNextPage in draw.c (07.show_file_input_netprint\draw) : 		ptPage = malloc(sizeof(T_PageDesc));
-AddFontOprForEncoding in encoding_manager.c (04.show_file\encoding) : 		ptFontOprCpy = malloc(sizeof(T_FontOpr));
-AddFontOprForEncoding in encoding_manager.c (04.show_file_my\encoding) : 		ptFontOprCpy = malloc(sizeof(T_FontOpr));
-AddFontOprForEncoding in encoding_manager.c (05.show_file_input\01.show_file_input_query\encoding) : 		ptFontOprCpy = malloc(sizeof(T_FontOpr));
-AddFontOprForEncoding in encoding_manager.c (05.show_file_input\02.show_file_input_select\encoding) : 		ptFontOprCpy = malloc(sizeof(T_FontOpr));
-AddFontOprForEncoding in encoding_manager.c (07.show_file_input_netprint\encoding) : 		ptFontOprCpy = malloc(sizeof(T_FontOpr));
-ShowMainPage in main_page.c (09_digital_photo\1th_showpic_zoom\page) :         tIconPixelDatas.aucPixelDatas = malloc(tIconPixelDatas.iTotalBytes);
-NetDebugOprInit in netprint.c (07.show_file_input_netprint\debug) :     g_pcNetDbgBuffer = malloc(PRINT_BUF_SIZE);
-NetDebugOprInit in netprint.c (09_digital_photo\1th_showpic_zoom\debug) :     g_pcNetDbgBuffer = malloc(PRINT_BUF_SIZE);
-PicZoom in zoom.c (09_digital_photo\1th_showpic_zoom\render\operation) :     pdwSrcXTable = (unsigned long*)malloc(200);
-PicZoom in zoom.c (09_digital_photo\1th_showpic_zoom\render\operation) :         DBG_PRINTF("pdwSrcXTable malloc err\n");
+---- gtInputEvent Matches (7 in 2 files) ----
+threadfunc in input_manager.c (07.show_file_input_netprint\input) :             gtInputEvent = tInputEventTmp;
+GetInputEvent in input_manager.c (07.show_file_input_netprint\input) :     *ptInputEvent = gtInputEvent;
+GetInputEvent in input_manager.c (07.show_file_input_netprint\input) :     DebugPrint("ptInputEvent = gtInputEvent will return\r\n");
+input_manager.c (09_digital_photo\1th_showpic_zoom\input) line 6 : static T_InputEvent gtInputEvent;
+threadfunc in input_manager.c (09_digital_photo\1th_showpic_zoom\input) :             gtInputEvent = tInputEventTmp;
+GetInputEvent in input_manager.c (09_digital_photo\1th_showpic_zoom\input) :     *ptInputEvent = gtInputEvent;
+GetInputEvent in input_manager.c (09_digital_photo\1th_showpic_zoom\input) :     //DebugPrint("ptInputEvent = gtInputEvent will return\r\n");

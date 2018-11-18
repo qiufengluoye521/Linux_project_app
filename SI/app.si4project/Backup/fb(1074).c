@@ -58,7 +58,6 @@ static int FBDeviceInit(void)
 	
 	g_dwScreenSize = g_tFBVar.xres * g_tFBVar.yres * g_tFBVar.bits_per_pixel / 8;
 	g_pucFBMem = (unsigned char *)mmap(NULL , g_dwScreenSize, PROT_READ | PROT_WRITE, MAP_SHARED, g_fd, 0);
-    DBG_PRINTF("fb mmap add:%x\n",g_pucFBMem);
 	if (0 > g_pucFBMem)	
 	{
 		DBG_PRINTF("can't mmap\n");
@@ -68,7 +67,6 @@ static int FBDeviceInit(void)
 	g_tFBOpr.iXres       = g_tFBVar.xres;
 	g_tFBOpr.iYres       = g_tFBVar.yres;
 	g_tFBOpr.iBpp        = g_tFBVar.bits_per_pixel;
-	g_tFBOpr.iLineWidth  = g_tFBVar.xres * g_tFBOpr.iBpp / 8;
 	g_tFBOpr.pucDispMem  = g_pucFBMem;
 
 	g_dwLineWidth  = g_tFBVar.xres * g_tFBVar.bits_per_pixel / 8;

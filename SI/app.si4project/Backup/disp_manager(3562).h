@@ -29,7 +29,6 @@ typedef struct DispOpr {
 	int iXres;
 	int iYres;
 	int iBpp;
-    int iLineWidth;
 	unsigned char *pucDispMem;
 	int (*DeviceInit)(void);
 	int (*ShowPixel)(int iPenX, int iPenY, unsigned int dwColor);

@@ -63,16 +63,6 @@ static int TouchScreenDeviceExit(void)
     return 0;
 }
 
-static int isOutOf500ms(struct timeval *ptPreTime, struct timeval *ptNowTime)
-{
-    int iPreMs;
-    int iNowMs;
-
-    iPreMs = ptPreTime->tv_sec * 1000 + ptPreTime->tv_usec / 1000;
-    iNowMs = ptNowTime->tv_sec * 1000 + ptNowTime->tv_usec / 1000;
-
-    return (iNowMs > iPreMs + 500);
-}
 
 static int TouchScreenGetInputEvent(PT_InputEvent ptInputEvent)
 {
@@ -80,34 +70,19 @@ static int TouchScreenGetInputEvent(PT_InputEvent ptInputEvent)
     int iRet;
 
 
-    static struct timeval tPreTime;
-
     iRet = ts_read(g_tTSDev, &tSamp, 1);
 
-    if (iRet < 0) {
-        return -1;
-    }
 
     /* 处理数据 */
-    if (isOutOf500ms(&tPreTime, &tSamp.tv))
+    if (iRet == 1)
     {
-        /* 如果此次触摸事件发生的时间, 距上次事件超过了500ms */
-        tPreTime = tSamp.tv;
-        ptInputEvent->tTime = tSamp.tv;
-        ptInputEvent->iType = INPUT_TYPE_TOUCHSCREEN;
+        ptInputEvent->tTime     = tSamp.tv;
+        ptInputEvent->iType     = INPUT_TYPE_TOUCHSCREEN;
+        ptInputEvent->iX        = tSamp.x;
+        ptInputEvent->iY        = tSamp.y;
+		ptInputEvent->iPressure = tSamp.pressure;
 
-        if (tSamp.y < giYres/3)
-        {
-            ptInputEvent->iVal = INPUT_VALUE_UP;
-        }
-        else if (tSamp.y > 2*giYres/3)
-        {
-            ptInputEvent->iVal = INPUT_VALUE_DOWN;
-        }
-        else
-        {
-            ptInputEvent->iVal = INPUT_VALUE_UNKNOWN;
-        }
+        
         return 0;
         
     }

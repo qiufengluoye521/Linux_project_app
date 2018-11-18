@@ -18,7 +18,10 @@ static T_Layout g_atMainPageLayout[] = {
     {0,0,0,0,NULL},
 };
 
-
+static T_PageLayout g_tMainPageLayout = {
+    .iMaxTotalBytes = 0,
+    .atLayout       = g_atMainPageIconsLayout,
+};
 
 static void MainPageRun(void);
 static int MainPageGetInputEvent(PT_Layout atLayout, PT_InputEvent ptInputEvent);
@@ -113,7 +116,7 @@ static void MainPageRun(void)
     T_InputEvent tInputEvent;
     int bPressed = 0;
     int iIndexPressed = -1;
-
+    T_PageParams tPageParams;
     
     /* 1. 显示页面 */
     ShowMainPage(g_atMainPageLayout);
@@ -121,82 +124,76 @@ static void MainPageRun(void)
     /* 3. 调用GetInputEvent获得输入事件，进而处理 */
     while (1)
     {
-        iIndex = MainPageGetInputEvent(g_atMainPageLayout, &tInputEvent);
-        DBG_PRINTF("pressed state %d\n",tInputEvent.iPressure);
+        iIndex = MainPageGetInputEvent(&g_tMainPageLayout, &tInputEvent);
         if (tInputEvent.iPressure == 0)
         {
-            //DBG_PRINTF("tInputEvent.iPressure is 0 \n");
             /* 如果是松开 */
             if (bPressed)
             {
-                //DBG_PRINTF("release state\n");
                 /* 曾经有按钮被按下 */
-                ReleaseButton(&g_atMainPageLayout[iIndexPressed]);
+                ReleaseButton(&g_atMainPageIconsLayout[iIndexPressed]);
                 bPressed = 0;
+
+                if (iIndexPressed == iIndex) /* 按下和松开都是同一个按钮 */
+                {
+                    switch (iIndexPressed)
+                    {
+                        case 0: /* 浏览按钮 */
+                        {
+                            Page("browse")->Run(&tPageParams);
+
+                            /* 从设置页面返回后显示当首的主页面 */
+                            ShowMainPage(&g_tMainPageLayout);
+
+                            break;
+                        }
+                        case 1: /* 连播按钮 */
+                        {
+                            Page("auto")->Run(&tPageParams);
+
+                            /* 从设置页面返回后显示当首的主页面 */
+                            ShowMainPage(&g_tMainPageLayout);
+
+                            break;
+                        }
+                        case 2: /* 设置按钮 */
+                        {
+                            Page("setting")->Run(&tPageParams);
+
+                            /* 从设置页面返回后显示当首的主页面 */
+                            ShowMainPage(&g_tMainPageLayout);
+
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
+                
                 iIndexPressed = -1;
             }
         }
         else
         {
-            //DBG_PRINTF("tInputEvent.iPressure is not 0 \n");
             /* 按下状态 */
             if (iIndex != -1)
             {
-                //DBG_PRINTF("release state,bPressed:%d\n",bPressed);
                 if (!bPressed)
                 {
                     /* 未曾按下按钮 */
                     bPressed = 1;
                     iIndexPressed = iIndex;
-                    //DBG_PRINTF("PressButton :%d\n",iIndexPressed);
-                    PressButton(&g_atMainPageLayout[iIndexPressed]);
+                    PressButton(&g_atMainPageIconsLayout[iIndexPressed]);
                 }
             }
-        }
+        }		
     }
 }
-
 static int MainPageGetInputEvent(PT_Layout atLayout, PT_InputEvent ptInputEvent)
 {
-    T_InputEvent tInputEvent;
-    int iRet;
-    int i = 0;
-
-    /* 获得原始的触摸屏数据 
-     * 它是调用input_manager.c的函数，此函数会让当前线否休眠
-     * 当触摸屏线程获得数据后，会把它唤醒
-     */
-    iRet = GetInputEvent(&tInputEvent);
-    if (iRet)
-    {
-        return -1;
-    }
-
-    if (tInputEvent.iType != INPUT_TYPE_TOUCHSCREEN)
-    {
-        return -1;
-    }
-
-    *ptInputEvent = tInputEvent;
-
-    /* 处理数据 */
-    /* 确定触点位于哪一个按钮上 */
-    while (atLayout[i].strIconName)
-    {
-        if ((tInputEvent.iX >= atLayout[i].iTopLeftX) && (tInputEvent.iX <= atLayout[i].iBotRightX) && \
-             (tInputEvent.iY >= atLayout[i].iTopLeftY) && (tInputEvent.iY <= atLayout[i].iBotRightY))
-        {
-            /* 找到了被点中的按钮 */
-            return i;
-        }
-        else
-        {
-            i++;
-        }			
-    }
-
-    /* 触点没有落在按钮上 */
-    return -1;
+    return 0;
 }
 
 
